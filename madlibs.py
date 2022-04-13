@@ -30,7 +30,7 @@ AWESOMENESS = [
 def start_here():
     """Display homepage."""
 
-    return "Hi! This is the home page."
+    return "Hi! This is the home page." 
 
 
 @app.route("/hello")
@@ -45,14 +45,31 @@ def greet_person():
     """Greet user with compliment."""
 
     player = request.args.get("person")
-
     compliment = choice(AWESOMENESS)
 
     return render_template("compliment.html", person=player, compliment=compliment)
 
+@app.route("/game")
+def show_madlib_form():
+    """Creating game page after player selects to play in compliment"""
+    play_game = request.args.get("play-game") 
+    player = request.args.get("person")
+    compliment = choice(AWESOMENESS)  
+    
+    if play_game == "yes-play-game":
+        return render_template("game.html")
+    else:
+        return render_template("goodbye.html", compliment=compliment)
+
+@app.route("/madlib")
+def show_madlib():
+    color = request.args.get("color")
+    noun = request.args.get("noun")
+    name = request.args.get("name")
+    adjective = request.args.get("adjective")
+    return render_template("madlib.html", color=color, name=name, noun=noun, adjective=adjective)
 
 if __name__ == "__main__":
     # Setting debug=True gives us error messages in the browser and also
     # "reloads" our web app if we change the code.
-
     app.run(debug=True, host="0.0.0.0")
